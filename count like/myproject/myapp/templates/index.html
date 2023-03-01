@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Like/Dislike Demo</title>
+    <style>
+     
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .post {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .post-content {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+           
+        }
+
+        .btn-like {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+      
+        .count {
+            font-size: 18px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#like-btn').click(function() {
+                $.post('/update_count/', {'action': 'like'}, function(data) {
+                    if (data.success) {
+                        $('#like-count').text(parseInt($('#like-count').text()) + 1);
+                    }
+                });
+            });
+
+            $('#dislike-btn').click(function() {
+                $.post('/update_count/', {'action': 'dislike'}, function(data) {
+                    if (data.success) {
+                        $('#dislike-count').text(parseInt($('#dislike-count').text()) + 1);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Count</h1>
+        
+        
+
+        {% for post in context %}
+        <div class="post">
+       
+
+            <div class="post-actions">
+                <button id="like-btn" class="btn btn-like">Like</button>
+                <span class="count" id="like-count">{{ post.likes }}</span>
+                <button id="dislike-btn" class="btn btn-like">Dislike</button>
+                <span class="count" id="dislike-count">{{ post.dislikes }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
